@@ -33,6 +33,9 @@ class _AllDataState extends State<AllData> {
         months.add(MonthAndYear(start.month,start.year));
 
         start = DateTime(start.year,start.month+1);
+        setState(() {
+
+        });
         countMonth();
         print("start${start.month} end ${end.month}");
 
@@ -42,6 +45,9 @@ class _AllDataState extends State<AllData> {
         months.add(MonthAndYear(start.month,start.year));
 
         start = DateTime(start.year,start.month+1);
+        setState(() {
+
+        });
         countMonth();
         print("start${start.month} end ${end.month}");
       }
