@@ -29,7 +29,6 @@ class _DateListState extends State<DateList> {
 
   DateTime? now;
   List<int> dates=[];
-
   List<DateTime?> dateTimes=[];
 
   DateTime todayDate = DateTime.now();
@@ -109,7 +108,8 @@ class _DateListState extends State<DateList> {
             child: Container(
               margin: EdgeInsets.all(2.0),
               color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?HexColor(AppColors.whiteColor).withOpacity(0.5):
-              startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor) :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor):HexColor(AppColors.deshiTextColor2)
+              startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor) :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor):
+              (getIntDate(dateTimes[index]!)>getIntDate(startDate!) && getIntDate(dateTimes[index]!)<getIntDate(endDate!))?HexColor(AppColors.deshiTextColorGrey):HexColor(AppColors.deshiTextColor2)
                   :HexColor(AppColors.deshiTextColor2)
               ) :HexColor(AppColors.backgroundColor),
               child: Center(child: Text(dateTimes[index]!=null?"${DateFormat("dd").format(dateTimes[index]!)}":"",style: TextStyle(
@@ -133,4 +133,13 @@ extension MyDateExtension on DateTime {
   DateTime getDateOnly(){
     return DateTime(this.year, this.month, this.day);
   }
+}
+
+int getIntDate(DateTime current_date){
+  return current_date.year*10000000000 +
+      current_date.month * 100000000 +
+      current_date.day * 1000000 +
+      current_date.hour*10000 +
+      current_date.minute*100 +
+      current_date.second;
 }

@@ -33,6 +33,7 @@ class AppColors {
   static const String facebookButtonColor = "#3157b0";
   static const String deshiTextColor = "#26408A";
   static const String deshiTextColor2 = "#f3f5f7";
+  static const String deshiTextColorGrey = "#dddddd";
   static const String yellowColor = "#FFA500";
   static const String greyLighColor = "#e2e6e6";
   static const String greyColor = "#616872";
