@@ -3,8 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:testdate/AppColors.dart';
 
 class DateList extends StatefulWidget {
-  const DateList({Key? key,required this.dateTime}) : super(key: key);
+  const DateList({Key? key,required this.dateTime,required this.startDate,required this.endDate,required this.selectedDate}) : super(key: key);
   final DateTime dateTime;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final Function(DateTime)? selectedDate;
 
   @override
   State<DateList> createState() => _DateListState();
@@ -33,16 +36,22 @@ class _DateListState extends State<DateList> {
   int? today;
   int? weekday;
 
+  DateTime? startDate;
+  DateTime? endDate;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async{
+      startDate=widget.startDate;
+      endDate=widget.endDate;
       today = int.parse(DateFormat('dd').format(todayDate));
       print("todayDate:${todayDate.millisecondsSinceEpoch}");
       now = widget.dateTime;
       weekday = now!.weekday;
       var totalDays = daysInMonth(now!);
+
 
       List<DateTime?> listOfDates,listOfDates1;
       listOfDates = new List<DateTime?>.generate(weekday!, (index) => null);
@@ -63,6 +72,8 @@ class _DateListState extends State<DateList> {
   }
   @override
   Widget build(BuildContext context) {
+    startDate = widget.startDate;
+    endDate= widget.endDate;
     return Container(
       //height: 400,
       child: GridView.builder(
@@ -74,13 +85,52 @@ class _DateListState extends State<DateList> {
          // print("small or not ${dateTimes[index]!=null?(dateTimes[index]!.difference(todayDate).inDays):""} ${dateTimes[index]!.millisecondsSinceEpoch} ${todayDate.millisecondsSinceEpoch} ${dateTimes[index]} ${todayDate} ");
         return Visibility(
           visible: dateTimes[index]!=null?true:false,
-          child: Container(
-            margin: EdgeInsets.all(2.0),
-            color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?HexColor(AppColors.whiteColor).withOpacity(0.5):HexColor(AppColors.deshiTextColor2)):HexColor(AppColors.backgroundColor),
-            child: Center(child: Text(dateTimes[index]!=null?"${DateFormat("dd").format(dateTimes[index]!)}":"")),
+          child: InkWell(
+            onTap: (){
+
+              widget.selectedDate!(dateTimes[index]!);
+
+              // if(endDate!=null){
+              //   startDate = dateTimes[index];
+              //   endDate=null;
+              //   setState(() {
+              //
+              //   });
+              //   print("StartDate: $startDate  endDate: $endDate   caldate: ${dateTimes[index]}");
+              // }
+              // else{
+              //   endDate =dateTimes[index];
+              //   setState(() {
+              //
+              //   });
+              //   print("StartDate: $startDate  endDate: $endDate   caldate: ${dateTimes[index]}");
+              // }
+            },
+            child: Container(
+              margin: EdgeInsets.all(2.0),
+              color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?HexColor(AppColors.whiteColor).withOpacity(0.5):
+              startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor) :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor):HexColor(AppColors.deshiTextColor2)
+                  :HexColor(AppColors.deshiTextColor2)
+              ) :HexColor(AppColors.backgroundColor),
+              child: Center(child: Text(dateTimes[index]!=null?"${DateFormat("dd").format(dateTimes[index]!)}":"",style: TextStyle(
+               color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?null:
+              startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?Colors.white :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?Colors.white:null:null
+              ) :null,
+              ),)),
+            ),
           ),
         );
       },itemCount: dateTimes.length,),
     );
+  }
+
+
+
+
+}
+
+extension MyDateExtension on DateTime {
+  DateTime getDateOnly(){
+    return DateTime(this.year, this.month, this.day);
   }
 }

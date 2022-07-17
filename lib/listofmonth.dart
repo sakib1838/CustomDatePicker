@@ -21,7 +21,8 @@ class _AllDataState extends State<AllData> {
   DateTime start= DateTime.now();
   DateTime end = DateTime(DateTime.now().year+1,DateTime.now().month+1);
 
-
+  DateTime? startDate= DateTime.now();
+  DateTime? endDate = DateTime.now().add(Duration(days: 1));
 
   List<MonthAndYear> months =[];
   List<DateTime> date=[];
@@ -96,10 +97,32 @@ class _AllDataState extends State<AllData> {
                     height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
                       itemBuilder: (context, index) {
+                        print("${months[index]}    ${DateTime(months[index].year,months[index].month)}");
                       return Container(child: Column(
                         children: [
                           Heading(monthAndYear: months[index],),
-                          DateList(dateTime: DateTime(months[index].year,months[index].month))
+                          DateList(dateTime: DateTime(months[index].year,months[index].month), startDate: startDate,endDate: endDate, selectedDate: (selectedDate ) {
+                            print("selectedDate:$selectedDate");
+                            if(endDate!=null){
+                              startDate = selectedDate;
+                              endDate=null;
+                              setState(() {
+
+                              });
+                              print("StartDate: $startDate  endDate: $endDate   caldate: $selectedDate");
+                            }
+                            else{
+                              endDate =selectedDate;
+                              setState(() {
+
+                              });
+                              print("StartDate: $startDate  endDate: $endDate   caldate: $selectedDate");
+                            }
+
+                            setState(() {
+
+                            });
+                          },)
                         ],
                       ));
                     },itemCount: months.length,),
