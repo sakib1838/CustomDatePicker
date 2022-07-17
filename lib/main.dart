@@ -43,7 +43,6 @@ class _MyAppState extends State<MyApp> {
       home:MyHome()//AllData() //const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
-
 }
 
 class MyHome extends StatefulWidget {
@@ -54,6 +53,7 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
+
   DateTime startDate = DateTime.now().getDateOnly();
   DateTime endDate = DateTime.now().add(Duration(days: 1)).getDateOnly();
 
@@ -68,13 +68,13 @@ class _MyHomeState extends State<MyHome> {
           child: Column(
             children: [
               ElevatedButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> AllData(dateTimes: (startDate , endDate ) {
-                  this.startDate = startDate;
-                  this.endDate = endDate;
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AllData(dateTimes: (startDate , endDate ) {
+                  this.startDate=startDate;
+                  this.endDate=endDate;
                   setState(() {
 
                   });
-                }, startDate: startDate, endDate: endDate,)));
+                }, startDate: startDate,endDate: endDate,)));
               }, child: Text("Select Date")),
 
               Text("${DateFormat('dd-MM-yyyy').format(startDate)} - ${DateFormat('dd-MM-yyyy').format(endDate)}")
@@ -85,5 +85,4 @@ class _MyHomeState extends State<MyHome> {
     );
   }
 }
-
 

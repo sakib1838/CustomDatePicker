@@ -113,7 +113,7 @@ class _DateListState extends State<DateList> {
                   :HexColor(AppColors.deshiTextColor2)
               ) :HexColor(AppColors.backgroundColor),
               child: Center(child: Text(dateTimes[index]!=null?"${DateFormat("dd").format(dateTimes[index]!)}":"",style: TextStyle(
-               color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?null:
+               color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?Colors.grey:
               startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?Colors.white :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?Colors.white:null:null
               ) :null,
               ),)),

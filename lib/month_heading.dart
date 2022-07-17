@@ -11,30 +11,30 @@ class Heading extends StatefulWidget {
 String getMonthName(int number){
   String m="";
   if(number==1){
-    m= "Jan";
+    m= "January";
   }else if(number==2){
-    m=  "Feb";
+    m=  "February";
   }else if(number==3){
-    m=  "Mar";
+    m=  "March";
   }else if(number==4){
-    m=  "Apr";
+    m=  "April";
   }else if(number==5){
     m=  "May";
   }
   else if(number==6){
-    m=  "Jun";
+    m=  "June";
   }else if(number==7){
-    m=  "Jul";
+    m=  "July";
   }else if(number==8){
-    m=  "Aug";
+    m=  "August";
   }else if(number==9){
-    m=  "Sep";
+    m=  "September";
   }else if(number==10){
-    m=  "Oct";
+    m=  "October";
   }else if(number==11){
-    m=  "Nov";
+    m=  "November";
   }else if(number==12){
-    m=  "Dec";
+    m=  "December";
   }
   return m;
 }
@@ -42,15 +42,18 @@ String getMonthName(int number){
 class _HeadingState extends State<Heading> {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Row(
-
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 4),
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
-            width: 30,
-            child: Text("${getMonthName(widget.monthAndYear.month)}" )),
-        Container(
-            width: 40,
-            child: Text("${widget.monthAndYear.year}"))
+          alignment: Alignment.centerRight,
+            width: MediaQuery.of(context).size.width*0.5,
+            child: Text("${getMonthName(widget.monthAndYear.month)} ${widget.monthAndYear.year}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),)),
+        // Container(
+        //     width: 40,
+        //     child: Text("${widget.monthAndYear.year}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),))
       ],
     ),
       // Text("${months[index].month<=9?"0${months[index].month}": "${months[index].month}"}     "  "${months[index].year}")

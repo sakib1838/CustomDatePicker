@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:testdate/AppColors.dart';
 import 'package:testdate/listofdates.dart';
 import 'package:testdate/month_heading.dart';
 
 class AllData extends StatefulWidget {
   const AllData({Key? key,required this.dateTimes,required this.startDate,required this.endDate}) : super(key: key);
-  final Function(DateTime,DateTime) dateTimes;
+  final Function(DateTime,DateTime)? dateTimes;
   final DateTime startDate;
   final DateTime endDate;
+
 
 
   @override
@@ -68,8 +71,8 @@ class _AllDataState extends State<AllData> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async{
-      startDate = widget.startDate;
-      endDate =widget.endDate;
+      startDate=widget.startDate;
+      endDate=widget.endDate;
       print("${start.millisecondsSinceEpoch} ${end.millisecondsSinceEpoch}");
       await countMonth();
       print("month:$months");
@@ -107,7 +110,9 @@ class _AllDataState extends State<AllData> {
                         print("${months[index]}    ${DateTime(months[index].year,months[index].month)}");
                       return Container(child: Column(
                         children: [
+                          SizedBox(height: 10,),
                           Heading(monthAndYear: months[index],),
+                          SizedBox(height: 10,),
                           DateList(dateTime: DateTime(months[index].year,months[index].month), startDate: startDate,endDate: endDate, selectedDate: (selectedDate ) {
                             print("selectedDate:$selectedDate");
                             if(endDate!=null){
@@ -129,8 +134,11 @@ class _AllDataState extends State<AllData> {
                             setState(() {
 
                             });
-                          },)
+                          },),
+
+                          index==months.length-1? SizedBox(height: MediaQuery.of(context).size.height*0.3,):SizedBox()
                         ],
+
                       ));
                     },itemCount: months.length,),
                   ),
@@ -138,27 +146,59 @@ class _AllDataState extends State<AllData> {
               ),
             ),
 
+           // SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+
             Visibility(
-              visible:  startDate!=null && endDate!=null,
+              visible:  endDate==null?false:startDate!=null && endDate!=null,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+                  color: HexColor(AppColors.backgroundColor),
+                ),
                   width: MediaQuery.of(context).size.width,
-                  child: ElevatedButton(onPressed: (){
-                    print("${startDate!.difference(endDate!).inDays.abs()}");
-                    if(startDate!.difference(endDate!).inDays.abs()>=30){
-                      const snackBar = SnackBar(
-                        duration: Duration(milliseconds: 100),
-                        content: Text('You have selected more than 30 days'),
-                      );
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Visibility(
+                              child: Text("${DateFormat('dd MMM').format(startDate!)} - ${endDate!=null?DateFormat('dd MMM').format(endDate!):""}",style: TextStyle(fontWeight: FontWeight.bold),)),
+                          Text(endDate!=null?"(${startDate!.difference(endDate!).inDays.abs()} nights)":""),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 4),
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(onPressed: (){
+                          print("${startDate!.difference(endDate!).inDays.abs()}");
+                          if(startDate!.difference(endDate!).inDays.abs()>=30){
+                            const snackBar = SnackBar(
+                              duration: Duration(milliseconds: 100),
+                              content: Text('You have selected more than 30 days'),
+                            );
 
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }else{
-                      widget.dateTimes(startDate!,endDate!);
-                      Navigator.pop(context);
-                    }
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }else{
+                            widget.dateTimes!(startDate!,endDate!);
+                            Navigator.pop(context);
+                          }
 
 
-                  }, child: Text("Done"))),
+                        }, child: Text("Select Dates")),
+                      ),
+                    ],
+                  )),
             ),
           ],
         ),
