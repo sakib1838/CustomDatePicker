@@ -50,10 +50,10 @@ class _DateListState extends State<DateList> {
       now = widget.dateTime;
       weekday = now!.weekday;
       var totalDays = daysInMonth(now!);
-
+      print("listOFDates:weekDay-> ${weekday}");
 
       List<DateTime?> listOfDates,listOfDates1;
-      listOfDates = new List<DateTime?>.generate(weekday!, (index) => null);
+      listOfDates = new List<DateTime?>.generate(weekday!-1, (index) => null);
         listOfDates1 = new List<DateTime>.generate(totalDays, (i) => DateTime(now!.year,now!.month,i + 1));
 
       // var listOfDates,listOfDates1;
@@ -107,14 +107,14 @@ class _DateListState extends State<DateList> {
             },
             child: Container(
               margin: EdgeInsets.all(2.0),
-              color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?HexColor(AppColors.whiteColor).withOpacity(0.5):
+              color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?null:
               startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor) :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?HexColor(AppColors.primaryColor):
-              (getIntDate(dateTimes[index]!)>getIntDate(startDate!) && getIntDate(dateTimes[index]!)<getIntDate(endDate!))?HexColor(AppColors.deshiTextColorGrey):HexColor(AppColors.deshiTextColor2)
-                  :HexColor(AppColors.deshiTextColor2)
+              (getIntDate(dateTimes[index]!)>getIntDate(startDate!) && getIntDate(dateTimes[index]!)<getIntDate(endDate!))?HexColor(AppColors.deshiTextColorGrey):HexColor(AppColors.deshiTextColorCalDate)
+                  :HexColor(AppColors.deshiTextColorCalDate)
               ) :HexColor(AppColors.backgroundColor),
               child: Center(child: Text(dateTimes[index]!=null?"${DateFormat("dd").format(dateTimes[index]!)}":"",style: TextStyle(
                color:dateTimes[index]!=null?(todayDate.difference(dateTimes[index]!).inDays>0?Colors.grey:
-              startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?Colors.white :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?Colors.white:null:null
+              startDate!.getDateOnly()== dateTimes[index]!.getDateOnly()?Colors.white :endDate!=null?endDate!.getDateOnly()==dateTimes[index]!.getDateOnly()?Colors.white:dateTimes[index]!.weekday==6 || dateTimes[index]!.weekday==7?HexColor(AppColors.primaryColor):null:null
               ) :null,
               ),)),
             ),

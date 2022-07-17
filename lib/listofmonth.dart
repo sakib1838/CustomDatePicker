@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:testdate/AppColors.dart';
@@ -34,7 +35,7 @@ class _AllDataState extends State<AllData> {
 
   List<MonthAndYear> months =[];
   List<DateTime> date=[];
-  List<String> weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  List<String> weekdays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
   Future<void> countMonth() async{
     if(start.year<end.year){
@@ -85,6 +86,7 @@ class _AllDataState extends State<AllData> {
         title: Text("Date"),
       ),
       body: Container(
+        color: HexColor(AppColors.whiteColor),
         child: Column(
           children: [
             Container(
@@ -94,14 +96,17 @@ class _AllDataState extends State<AllData> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
+                    ///have to work here
+                    print("weekDay:${DateTime.now().weekday}  ${weekdays[index]}${index+1}");
                   return Container(
                     width: MediaQuery.of(context).size.width/7,
-                    child: Center(child: Text("${weekdays[index]}",style: TextStyle(color: DateTime.now().weekday==index?Colors.blue:Colors.black),)),);
+                    child: Center(child: Text("${weekdays[index]}",style: TextStyle(color: DateTime.now().weekday==index+1?Colors.blue:Colors.black),)),);
                 },itemCount: weekdays.length,),
               )),
 
             Expanded(
               child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
                 child: SingleChildScrollView(
                   child: Container(
                     height: MediaQuery.of(context).size.height,
@@ -178,7 +183,8 @@ class _AllDataState extends State<AllData> {
                       ),
                       SizedBox(height: 10,),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4),
+                        height: 50,
+                        margin: EdgeInsets.symmetric(horizontal: 8),
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(onPressed: (){
                           print("${startDate!.difference(endDate!).inDays.abs()}");
@@ -197,6 +203,7 @@ class _AllDataState extends State<AllData> {
 
                         }, child: Text("Select Dates")),
                       ),
+                      SizedBox(height: 10,),
                     ],
                   )),
             ),
