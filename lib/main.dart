@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:testdate/SingleDatePicker/listofmonth_singledate.dart';
 import 'package:testdate/listofmonth.dart';
 
 void main() {
@@ -54,8 +55,8 @@ class MyHome extends StatefulWidget {
 
 class _MyHomeState extends State<MyHome> {
 
-  DateTime startDate = DateTime.now().getDateOnly();
-  DateTime endDate = DateTime.now().add(Duration(days: 1)).getDateOnly();
+  DateTime? startDate = DateTime.now().getDateOnly();
+  DateTime? endDate = DateTime.now().add(Duration(days: 1)).getDateOnly();
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +69,28 @@ class _MyHomeState extends State<MyHome> {
           child: Column(
             children: [
               ElevatedButton(onPressed: (){
+                startDate = DateTime.now().getDateOnly();
+                endDate = DateTime.now().add(Duration(days: 1)).getDateOnly();
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>AllData(dateTimes: (startDate , endDate ) {
                   this.startDate=startDate;
                   this.endDate=endDate;
                   setState(() {
 
                   });
-                }, startDate: startDate,endDate: endDate,)));
+                }, startDate: startDate!,endDate: endDate!,)));
               }, child: Text("Select Date")),
 
-              Text("${DateFormat('dd-MM-yyyy').format(startDate)} - ${DateFormat('dd-MM-yyyy').format(endDate)}")
+              ElevatedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>AllSingleData(dateTimes: (startDate) {
+                  this.startDate=startDate;
+                  endDate=null;
+                  setState(() {
+
+                  });
+                }, startDate: startDate!,endDate: null,)));
+              }, child: Text("Select Date")),
+
+              Text("${DateFormat('dd-MM-yyyy').format(startDate!)} ${endDate!=null?"- ${DateFormat('dd-MM-yyyy').format(endDate!)}":""}")
             ],
           ),
         ),
